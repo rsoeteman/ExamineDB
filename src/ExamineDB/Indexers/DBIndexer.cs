@@ -1,41 +1,133 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Data;
 using System.Xml.Linq;
-using Examine.Providers;
+using Examine;
+using Examine.LuceneEngine;
+using Examine.LuceneEngine.Providers;
+using ExamineDB.Config;
+using ExamineDB.TypeExtensions;
+using PetaPoco;
 
 namespace ExamineDB.Indexers
 {
-    public class DBIndexer : BaseIndexProvider
+    public class DBIndexer : LuceneIndexer
     {
-
-        public override void ReIndexNode(XElement node, string type)
+        public DBIndexer()
         {
-            throw new NotImplementedException();
+            OptimizationCommitThreshold = 100;
+            AutomaticallyOptimize = false;
         }
-
+        public override void Initialize(string name, NameValueCollection config)
+        {
+            Config = new DBIndexerConfig(name, config);
+            base.Initialize(name, config);
+        }
+        
         public override void DeleteFromIndex(string nodeId)
         {
-            throw new NotImplementedException();
+            base.DeleteFromIndex(nodeId);
         }
 
-        public override void IndexAll(string type)
+        protected override void AddSingleNodeToIndex(XElement node, string type)
         {
-            throw new NotImplementedException();
+            base.AddSingleNodeToIndex(node, type);
         }
 
+        /// <summary>
+        /// Rebuilds the entire index from scratch for all index types
+        /// </summary>
+        /// <remarks>This will completely delete the index and recreate it</remarks>
         public override void RebuildIndex()
         {
-            throw new NotImplementedException();
+
+            EnsureIndex(true);
+
+            //call abstract method
+            PerformIndexAll(Config.NodeType);
         }
 
-        public override bool IndexExists()
+
+        protected override void PerformIndexAll(string type)
         {
-            throw new NotImplementedException();
+            BuildIndex();
         }
 
-      
+        private void BuildIndex()
+        {
+            var nodes = new List<XElement>();
+            
+            using (var db = new Database(Config.ConnectionStringName))
+            {
+                db.OpenSharedConnection();
+                try
+                {
+                    using (var cmd = db.CreateCommand(db.Connection, Config.SQL))
+                    {
+                        using (IDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                nodes.Add(reader.SerializeToXml(Config).Root);
+                               
+                            }
+                        }
+                    }
+                    AddNodesToIndex(nodes, Config.NodeType);
+                }
+                catch (Exception x)
+                {
+                }
+                finally
+                {
+                    db.CloseSharedConnection();
+                }
+            }
+        }
+
+        protected override Dictionary<string, string> GetDataToIndex(XElement node, string type)
+        {
+            var values = new Dictionary<string, string>();
+            var nodeId = int.Parse(node.Attribute("id").Value);
+
+            foreach (var field in node.Attributes())
+            {
+                string val = node.SelectExaminePropertyValue(field.Name.LocalName);
+                var args = new IndexingFieldDataEventArgs(node, field.Name.LocalName, val, true, nodeId);
+                OnGatheringFieldData(args);
+                val = args.FieldValue;
+
+                //don't add if the value is empty/null                
+                if (!string.IsNullOrEmpty(val))
+                {
+                    if (values.ContainsKey(field.Name.LocalName))
+                    {
+                        OnDuplicateFieldWarning(-1, IndexSetName, field.Name.LocalName);
+                    }
+                    else
+                    {
+                        values.Add(field.Name.LocalName, val);
+                    }
+                }
+
+            }
+
+            //raise the event and assign the value to the returned data from the event
+            var indexingNodeDataArgs = new IndexingNodeDataEventArgs(node, nodeId, values, type);
+            OnGatheringNodeData(indexingNodeDataArgs);
+            values = indexingNodeDataArgs.Fields;
+
+            return values;
+        }
+
+        protected override void PerformIndexRebuild()
+        {
+            BuildIndex();
+        }
+
+
+        private DBIndexerConfig Config { get; set; }
+
     }
 }
