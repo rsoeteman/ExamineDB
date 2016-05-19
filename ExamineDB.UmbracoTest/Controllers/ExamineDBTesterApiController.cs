@@ -9,7 +9,8 @@ namespace ExamineDB.UmbracoTest.Controllers
     [PluginController("ExamineDB")]
     public class ExamineDBTesterApiController : UmbracoAuthorizedApiController
     {
-        public void ReIndex()
+        [HttpGet]
+        public void ReIndexAll()
         {
             IndexHelper.RebuildIndex("ExamineDBIndexer");
         }
