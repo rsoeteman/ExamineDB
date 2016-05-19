@@ -24,16 +24,6 @@ namespace ExamineDB.Indexers
             Config = new DBIndexerConfig(name, config);
             base.Initialize(name, config);
         }
-        
-        public override void DeleteFromIndex(string nodeId)
-        {
-            base.DeleteFromIndex(nodeId);
-        }
-
-        protected override void AddSingleNodeToIndex(XElement node, string type)
-        {
-            base.AddSingleNodeToIndex(node, type);
-        }
 
         /// <summary>
         /// Rebuilds the entire index from scratch for all index types
@@ -52,6 +42,39 @@ namespace ExamineDB.Indexers
         protected override void PerformIndexAll(string type)
         {
             BuildIndex();
+        }
+
+        internal void IndexSingleNode(string nodeId)
+        {
+            //Make sure the record is deleted first
+            DeleteFromIndex(nodeId);
+   
+            using (var db = new Database(Config.ConnectionStringName))
+            {
+                db.OpenSharedConnection();
+                try
+                {
+                    using (var cmd = db.CreateCommand(db.Connection, Config.SingleRecordSQL,nodeId))
+                    {
+                        using (IDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                AddSingleNodeToIndex(reader.SerializeToXml(Config).Root,Config.NodeType);
+                            }
+                        }
+                    }
+                }
+                catch (Exception x)
+                {
+
+                }
+                finally
+                {
+                    db.CloseSharedConnection();
+                }
+            }
+
         }
 
         private void BuildIndex()

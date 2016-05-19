@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamineDB", "src\ExamineDB\ExamineDB.csproj", "{EE3D8686-6252-496B-8F47-9B4E741ED559}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamineDB.UmbracoTest", "ExamineDB.UmbracoTest\ExamineDB.UmbracoTest.csproj", "{B5818421-4A75-4D81-860F-7BCE15C64047}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,12 @@ Global
 		{EE3D8686-6252-496B-8F47-9B4E741ED559}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EE3D8686-6252-496B-8F47-9B4E741ED559}.umbracov7|Any CPU.ActiveCfg = umbracov7|Any CPU
 		{EE3D8686-6252-496B-8F47-9B4E741ED559}.umbracov7|Any CPU.Build.0 = umbracov7|Any CPU
+		{B5818421-4A75-4D81-860F-7BCE15C64047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5818421-4A75-4D81-860F-7BCE15C64047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5818421-4A75-4D81-860F-7BCE15C64047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5818421-4A75-4D81-860F-7BCE15C64047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5818421-4A75-4D81-860F-7BCE15C64047}.umbracov7|Any CPU.ActiveCfg = Umbracov7|Any CPU
+		{B5818421-4A75-4D81-860F-7BCE15C64047}.umbracov7|Any CPU.Build.0 = Umbracov7|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
