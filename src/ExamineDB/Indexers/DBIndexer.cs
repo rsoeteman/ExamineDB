@@ -150,7 +150,7 @@ namespace ExamineDB.Indexers
         }
 
 
-        private DBIndexerConfig Config { get; set; }
+        public  DBIndexerConfig Config { get; set; }
 
     }
 }

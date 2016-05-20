@@ -1,8 +1,6 @@
 ﻿angular.module("umbraco")
     .controller("ExamineDB.Backoffice.ExamineDBDashboardController",
     function ($scope, $http, notificationsService) {
-        $scope.nodeId = 123;
-
         $scope.reindexAll = function () {
             {
                 $http.get("backoffice/ExamineDB/ExamineDBTesterApi/ReIndexAll").then(function (res) {
