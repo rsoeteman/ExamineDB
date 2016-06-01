@@ -61,13 +61,13 @@ Once you configured the indexer correctly and the index contains items you can q
 ##API##
 ExamineDB  comes with a small management API to rebuild a complete index, or part of the index.
 
-###Rebuild a complete index###
+**Rebuild a complete index**
     ExamineDB.Helpers.IndexHelper.RebuildIndex("IndexName here");
 
-###Remove a single item from the index###
+**Remove a single item from the index**
     ExamineDB.Helpers.IndexHelper.DeleteFromIndex("Id here", "IndexName here");
 
-###Re-index a single node###
+**Re-index a single node**
     ExamineDB.Helpers.IndexHelper.DeleteFromIndex("Id here", "IndexName here");
 
 ## Test in Umbraco ##
