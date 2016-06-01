@@ -205,7 +205,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)bin\$(ConfigurationName)\ExamineDB*.dll" "F:\sites\$(ConfigurationName)\bin\" /y</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(ProjectDir)bin\$(ConfigurationName)\ExamineDB*.dll" "F:\sites\$(ConfigurationName)\bin\" /y
+if /I "$(ConfigurationName)" == "Release"  XCOPY "$(ProjectDir)bin\$(ConfigurationName)\ExamineDB*.dll" "$(SolutionDir)\NuGet\ExamineDB\lib" /y
+
+if /I "$(ConfigurationName)" == "Release" DEL  "$(SolutionDir)\nuget\ExamineDB\ExamineDB*.nupkg" /Q
+if /I "$(ConfigurationName)" == "Release" NUGET PACK "$(SolutionDir)\nuget\ExamineDB\ExamineDB.nuspec"
+if /I "$(ConfigurationName)" == "Release" XCOPY "$(ProjectDir)bin\$(ConfigurationName)\*.nupkg" "$(SolutionDir)\nuget\examinedb\" /y
+if /I "$(ConfigurationName)" == "Release" DEL  "$(ProjectDir)bin\$(ConfigurationName)\*.nupkg" /Q</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

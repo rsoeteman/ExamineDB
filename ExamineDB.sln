@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamineDB", "src\ExamineDB\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamineDB.UmbracoTest", "ExamineDB.UmbracoTest\ExamineDB.UmbracoTest.csproj", "{B5818421-4A75-4D81-860F-7BCE15C64047}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{8C0049DA-605E-4A81-90C3-68CEA202A1D0}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\ExamineDB\examinedb.nuspec = NuGet\ExamineDB\examinedb.nuspec
+		NuGet\ExamineDBUmbracoTester\examinedb.umbracotester.nuspec = NuGet\ExamineDBUmbracoTester\examinedb.umbracotester.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
