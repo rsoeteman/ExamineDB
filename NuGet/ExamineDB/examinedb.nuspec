@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ExamineDB</id>
+    <version>1.0</version>
+    <authors>Soeteman Software</authors>
+    <owners>Soeteman Software</owners>
+    <projectUrl>https://github.com/rsoeteman/ExamineDB</projectUrl>
+    <iconUrl>http://soetemansoftware.nl/img/soetemansoftware_nuget.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ExamineDB is a generic component that helps you index SQL (server) databases using Examine, just configure a SQL statement and Examine DB will add it to the examine Index. For large databases it is possible to Re(index) single records, or delete a single record from the database. </description>
+    <releaseNotes>
+      - initial release
+    </releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>umbraco examine</tags>
+  </metadata>
+</package>
